@@ -1,0 +1,62 @@
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+
+.card{
+    max-width: 100%;
+    margin: auto;
+  }
+  ::ng-deep  .p-dropdown
+{
+    width: 100%!important;
+}
+.spacer{
+  padding-bottom: 1%;
+}
+.bigspacer{
+  padding-bottom: 5%;
+}
+
+:host ::ng-deep .p-card  {
+  background-color: #202845 !important;
+  color:white;
+  border-radius: 10px;
+  margin: 20px;
+  padding: 20px;
+  text-align: left;
+  padding: 0%;
+}
+
+::ng-deep .p-card-header{
+  height:200px
+}
+
+.event-card-thumbnail-wrapper {
+  width: 100%;
+  height: 100%;
+  padding-top: 0;
+  overflow: hidden;
+}
+.card-image {
+  width: 100%;
+  height: 100%;
+ 
+}
+::ng-deep .p-ddl{
+  padding: 0 !important;
+}
+
+.btn-login{
+    width: 30%;
+    margin: 20px;
+}
+
+.p-card .p-card-footer
+{
+  padding: 0 !important;
+}
+
+.align-right{
+  text-align: right;
+}
+  
+  

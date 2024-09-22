@@ -1,0 +1,136 @@
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #ffffff;
+  }
+
+  header {
+      background-color: #ffffff;
+      padding: 10px;
+      text-align: center;
+  }
+
+  h1 {
+      margin: 0;
+  }
+
+  h3 {
+      margin-top: 5px;
+  }
+
+  #logo {
+      margin-right: 10px;
+  }
+  
+  #continueinappalert {
+      background-color: #d9f6ff;
+      border-radius: 10px;
+      margin: 20px;
+      padding: 20px;
+      text-align: left;
+  }
+
+  #content {
+      background-color: #faeec8;
+      border-radius: 10px;
+      margin: 20px;
+      padding: 20px;
+      text-align: center;
+  }
+  
+  footer {
+      background-color: #ffffff;
+      padding: 10px;
+      text-align: center;
+  }
+  
+  input[type="text"]:focus {
+  border: 1px solid #00a1c9;
+  box-shadow: 0 0 0 1px #00a1c9;
+  outline: 2px dotted transparent;
+}
+form {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  padding-right: 3rem;
+}
+
+input[type="submit"] {
+  background-color: white;
+  border: 1px solid #545b64;
+  border-radius: 2px;
+  color: #545b64;
+  cursor: pointer;
+  font-weight: 700;
+  padding: .4rem 2rem;
+}
+input[type="submit"]:hover {
+  background-color: #f2f3f3;
+  border: 1px solid #16191f;
+  color: #16191f;
+}
+.grid-container {
+      display: grid;
+      grid-template-columns: auto 1fr; /* Icon column takes the width of its content */
+      gap: 10px; /* Gap between grid items */
+      align-items: left; /* Align items vertically in the center */
+  }
+
+  .material-symbols-outlined {
+font-variation-settings:
+'FILL' 0,
+'wght' 400,
+'GRAD' 0,
+'opsz' 24
+}
+.custom-button {
+display: inline-block;
+padding: 10px 20px; /* Adjust padding as needed */
+background-color: #1b7cd1;
+color: white;
+border: none;
+border-radius: 10px; /* Adjust radius for rounded corners */
+cursor: pointer;
+}
+
+.custom-button:hover {
+background-color: darkblue; /* Change color on hover if desired */
+}
+
+.flex-container {
+  display: flex;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.flex-spacer {
+  flex-grow: 1;
+}
+
+.capsule {
+background-color: #e6cda5;
+color: black; /* Text color */
+padding: 5px 15px; /* Adjust padding as needed */
+border-radius: 30px; /* Adjust the radius to control the shape */
+display: flex; /* Use flexbox to align items */
+align-items: center; /* Align items vertically */
+}
+</style>
+
+<main *ngIf="showHead" class="main">
+  <div class="flex-container">
+    <div><img src="https://assets.cdn.junioreconomicclub.org/brand/logo.png" style="max-width: 50px; max-height: 100px;"></div>
+    <div class="flex-spacer"></div>
+    <div class="capsule"><div class="icon"><span class="material-symbols-outlined">
+person
+</span></div>Hi,<b>&nbsp;{{displayName}} </b></div>
+</div>
+</main>
+
+
+
+<router-outlet />

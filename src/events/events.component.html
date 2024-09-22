@@ -1,0 +1,78 @@
+<div class="container mt-6">
+    
+    <div class="row">
+        <div class="col-md-6 mb-6 bluebackground" *ngFor="let event of events">
+        <p-card [header]=event.name [subheader]=event.summary >
+            <ng-template pTemplate="header">
+                <img alt="Card" [src]=event.imageUrl class="card-image" />
+            </ng-template>
+            <ng-template pTemplate="content">
+                <p><i class="pi pi-calendar-clock" style="font-size: 2rem"></i>
+                   <strong>Time:</strong> {{ event.time }}</p>
+                <p>
+                <i class="pi pi-map-marker" style="font-size: 2rem"></i>
+                <strong>Place:</strong> {{ event.place }}
+                </p>
+        
+              </ng-template>
+            <ng-template pTemplate="footer">
+                <div class="d-flex justify-content-between">
+                    
+                        <p-button label="Register" [hidden]=event.isRegistered  (onClick)="register(event)" class="btn"/>
+                        <p-button label="Registered" [hidden]=!event.isRegistered  [disabled]="true" class="btn cursor-arrow"/>
+                        <a title="More Details"><i class="pi pi-question-circle" (click)="showDialog(event)" style="font-size: 2rem"></i>
+                        </a>
+                </div>
+            </ng-template>
+        </p-card>
+        </div>
+
+    </div>
+    <div *ngIf="selectedEvent" class="row">
+        <p-dialog 
+        header={{selectedEvent.name}} 
+        [modal]="true"
+        [(visible)]="visible" 
+        [style]="{ width: '50rem' }" 
+        [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+            <p class="mb-5">
+                <img alt="Card" [src]=selectedEvent.imageUrl class="card-image" />
+         
+            </p>
+            <p class="mb-5">
+                <i class="pi pi-calendar-clock" style="font-size: 2rem"></i>
+                    <strong>Time:</strong> {{ selectedEvent.time }}
+                 
+                 
+            </p>
+            <p class="mb-5">
+                <i class="pi pi-map-marker" style="font-size: 2rem"></i>
+                 <strong>Place:</strong> {{ selectedEvent.place }}
+            </p>
+
+            <p class="mb-5">
+               
+                {{ selectedEvent.description }}
+            </p>
+            <p class="mb-5">
+            </p>
+            <p>
+            </p>
+    </p-dialog>
+    </div>
+
+    <div *ngIf="showConfirmation" class="row">
+        <p-dialog 
+        header="Registeration confirmation" 
+        [modal]="true"
+        [(visible)]="showConfirmation" 
+        [style]="{ width: '50rem' }" 
+        [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+        <p class="mb-5">
+         <br/>You'll receive an email confirmation, and your registration will appear in JEC Connect.
+        </p>
+           
+        </p-dialog>
+    </div>
+
+  </div>
