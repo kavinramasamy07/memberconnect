@@ -4,7 +4,7 @@ import { Firestore } from '@angular/fire/firestore'
 import { FirebaseTSFirestore } from 'firebasets/firebasetsFirestore/firebaseTSFirestore';
 import { Auth } from 'firebase/auth';
 import { AuthService } from './auth.service';
-import { FirebaseTSApp } from 'firebasets/FirebaseTsApp/firebaseTSApp';
+import { FirebaseTSApp } from 'firebasets/firebaseTsApp/firebaseTSApp';
 import { firebaseConfig } from './app.config';
 import { CommonModule } from '@angular/common';  
 
