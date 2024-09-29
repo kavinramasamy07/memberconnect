@@ -1,7 +1,7 @@
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { Component, inject } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore'
-import { FirebaseTSFirestore } from 'firebasets/firebasetsFirestore/FirebaseTSFirestore';
+import { FirebaseTSFirestore } from 'firebasets/firebasetsFirestore/firebaseTSFirestore';
 import { Auth } from 'firebase/auth';
 import { AuthService } from './auth.service';
 import { FirebaseTSApp } from 'firebasets/FirebaseTsApp/firebaseTSApp';
