@@ -2,3 +2,8 @@
 .btn-test{
     background-color: red;
   }
+
+.error{
+   font-size: small;
+   color: red;
+}
