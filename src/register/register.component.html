@@ -41,6 +41,24 @@
             Grad year is required.
            </div>
 
+           <div class="field-radiobutton form-group mb-3 spacer">
+            <label for="gender">Gender &nbsp; &nbsp;</label>
+            <p-radioButton 
+            name="gender" 
+            value="Male" 
+            formControlName="gender" 
+            inputId="male">
+          </p-radioButton>
+          <label for="male">Male &nbsp; &nbsp;</label>
+          <p-radioButton 
+          name="gender" 
+          value="Female" 
+          formControlName="gender"
+          inputId="female">
+        </p-radioButton>
+        <label for="female">Female</label>
+            </div>
+
           <div class="form-group mb-3 spacer">
             <label for="email">Email</label>
             <input id="email" placeholder="Email" formControlName="email" class="form-control p-inputtext p-component">

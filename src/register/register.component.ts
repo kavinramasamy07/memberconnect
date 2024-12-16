@@ -7,11 +7,14 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { Auth } from '@angular/fire/auth';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule, DropdownModule,   ReactiveFormsModule, InputTextModule, CardModule, ButtonModule, CommonModule],
+  imports: [FormsModule, DropdownModule, RadioButtonModule,     ReactiveFormsModule, InputTextModule, CardModule, ButtonModule, CommonModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
@@ -26,12 +29,13 @@ export class RegisterComponent {
   httpClient = inject(HttpClient);
   router = inject(Router);
 
-  constructor(private route: ActivatedRoute, private fb: FormBuilder) {
+  constructor(private route: ActivatedRoute, private fb: FormBuilder, private auth: Auth) {
     this.registerForm = this.fb.group({
       fName: ['', [Validators.required]],
       lName: ['', Validators.required],
       school:['', Validators.required ],
       gradYear:['', [Validators.required]],
+      gender: ['Male', [Validators.required]],
       email:['', [Validators.required, Validators.email]],
       chapter:['', Validators.required ]
     });
@@ -83,6 +87,10 @@ export class RegisterComponent {
   get gradYear() {
     return this.registerForm.get('gradYear')?.value;
   }
+
+  get gender() {
+    return this.registerForm.get('gender')?.value;
+  }
   
   onSubmit(): void {
   
@@ -96,20 +104,40 @@ export class RegisterComponent {
   }
 
   register() {
-    console.log('Form Submitted', this.registerForm.value);
-    const token= localStorage.getItem('tokenId');
-    const chapter = localStorage.getItem('chapter');
-    var baseUrl="https://api.junioreconomicclub.org";
-    var qsp =  `email=${this.email}&firstName=${this.fName}&lastName=${this.lName}&school=${this.school}&gradYear=${this.gradYear}&gender=&id=${this.firebaseId}&chapter=${this.chapter}`;
- 
-    var url = baseUrl+ "/auth/registerNewUser?"+qsp;
-    this.httpClient.get(url)
-    .subscribe((e: any) => {
-        this.router.navigateByUrl('/events');
-    });
+
+    createUserWithEmailAndPassword(this.auth, this.email, "password") .then(async (userCred) => {
+      console.log(userCred);
+      console.log('Form Submitted', this.registerForm.value);
+      var res= await userCred.user.getIdTokenResult(true);
+      localStorage.setItem('userId', res.claims.sub?.toString()??"")
+      localStorage.setItem('tokenId', res.token);
+      localStorage.setItem('chapter', this.chapter);
+      const token= localStorage.getItem('tokenId');
+      var userId = localStorage.getItem('userId');
+      var baseUrl="https://api.junioreconomicclub.org";
+      var qsp =  `email=${this.email}&firstName=${this.fName}&lastName=${this.lName}&school=${this.school}&gradYear=${this.gradYear}&gender=${this.gender}&id=${userId}&chapter=${this.chapter}&key=${token}`;
+      var url = baseUrl+ "/auth/registerNewUser?"+qsp;
+      this.httpClient.get(url , { responseType: 'text' })
+      .subscribe((e: any) => {
+          this.router.navigateByUrl('/events');
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });;
+   
+    
   }
 
   onReset() {
     this.registerForm.reset();
   }
+
+  signUp(name: string, email: string, password: string )
+  {
+    
+   
+  }
 }
+
+
