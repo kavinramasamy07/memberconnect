@@ -54,7 +54,7 @@ export class RegisterComponent {
     this.gradYears = Array.from({ length: 4 }, (_, i) => (currentYear + i + 1).toString());
   }
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
+      this.route.queryParams.subscribe(params => {
       this.registerForm.controls['fName'].setValue(params['fName']);
       this.registerForm.controls['lName'].setValue(params['lName']);
       this.registerForm.controls['school'].setValue(params['school']);

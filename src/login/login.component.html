@@ -1,11 +1,7 @@
 <form>
-    @if(errorMessage){
-      <div> {{ errorMessage}}</div>
-    }
-  
     <div class="row">
     <div class="col-2">&nbsp;</div>
-    <div class="col-8">
+    <div class="col-8 top-pad-100">
     <p-card header="Member Login">
       <ng-template pTemplate="header">
           <img alt="Card" width="50%" style="padding: 30px;" height="75%" src="https://cdn.prod.website-files.com/61dfe01d7c07e8e67a2a7a9a/61dfe01d7c07e887742a7aa7_Group%2051.svg" />
@@ -27,8 +23,6 @@
          
           <div class="d-flex row">
             <div class="col-4">
-            <button type="button" class="btn btn-link p-button-text" (click)="onForgotPassword()">Forgot Password?</button>
-            <button type="button" class="btn btn-link p-button-text" (click)="onSignUp()">Sign Up</button>
           </div>
             <div class="col-8 align-right">
               <button type="submit" class="btn btn-primary btn-login p-button-rounded p-component" (click) = "onSubmit()">Login</button>
@@ -46,3 +40,4 @@
  
   </div>
 </form>
+<p-toast key="toastKey" position="top-center"></p-toast>

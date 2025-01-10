@@ -10,11 +10,14 @@ import { AuthService } from '../app/auth.service';
 import { Router } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, DropdownModule,   ReactiveFormsModule, InputTextModule, CardModule, ButtonModule],
+  imports: [FormsModule, DropdownModule,   ReactiveFormsModule, InputTextModule, CardModule, ButtonModule, ToastModule],
+  providers:[MessageService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -26,7 +29,7 @@ export class LoginComponent {
   chapters: any[];
   router = inject(Router)
   errorMessage: string | null = null;
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private _messageService: MessageService ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
@@ -64,6 +67,7 @@ export class LoginComponent {
           this.router.navigateByUrl('/events');
         },
         error: (err) =>{
+          this._messageService.add({key:'toastKey', severity: 'error', summary: 'Login Error', detail:'Invalid Email/Password', sticky:true });
           this.errorMessage = err.code
         }
       })

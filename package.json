@@ -22,6 +22,7 @@
     "@ng-bootstrap/ng-bootstrap": "^16.0.0",
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.3",
+    "express": "^4.21.2",
     "firebase": "^10.12.3",
     "firebasets": "^1.2.13",
     "material-icons": "^1.13.12",
