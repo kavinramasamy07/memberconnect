@@ -106,8 +106,6 @@ export class RegisterComponent {
   register() {
 
     createUserWithEmailAndPassword(this.auth, this.email, "password") .then(async (userCred) => {
-      console.log(userCred);
-      console.log('Form Submitted', this.registerForm.value);
       var res= await userCred.user.getIdTokenResult(true);
       localStorage.setItem('userId', res.claims.sub?.toString()??"")
       localStorage.setItem('tokenId', res.token);
