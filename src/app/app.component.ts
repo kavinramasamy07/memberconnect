@@ -6,7 +6,7 @@ import { Auth } from 'firebase/auth';
 import { AuthService } from './auth.service';
 import { FirebaseTSApp } from 'firebasets/firebasetsApp/firebaseTSApp';
 import { firebaseConfig } from './app.config';
-import { CommonModule } from '@angular/common';  
+import { CommonModule } from '@angular/common';
 
 
 @Component({
@@ -24,11 +24,16 @@ export class AppComponent {
   public displayName: any;
   showHead: boolean = false;
   private authService = inject(AuthService);
+  
 
   constructor (private router: Router) {
+   
+    this.displayName='';
     this.router.events.subscribe((event: any) => {
+      console.log(event);
+
       if (event instanceof NavigationEnd) {
-        if (event.url === '/login' || event.url.includes('/register')) {
+        if (event.url===('/') || event.url.includes('/login') || event.url.includes('/register')) {
           this.showHead= false;
         } else {
           this.showHead= true;

@@ -122,13 +122,23 @@ align-items: center; /* Align items vertically */
 </style>
 
 <main *ngIf="showHead" class="main">
-  <div class="flex-container">
-    <div><img src="https://assets.cdn.junioreconomicclub.org/brand/logo.png" style="max-width: 50px; max-height: 100px;"></div>
-    <div class="flex-spacer"></div>
-    <div class="capsule"><div class="icon"><span class="material-symbols-outlined">
-person
-</span></div>Hi,<b>&nbsp;{{displayName}} </b></div>
-</div>
+<nav class="navbar navbar-light bg-light" style="padding: 30px;">
+  <a class="navbar-brand" href="#">
+    <img src="https://assets.cdn.junioreconomicclub.org/brand/logo.png"  height="30" alt="">
+  </a>
+  <a class="nav-link" target="_blank" href="https://www.junioreconomicclub.org">HOME</a>
+  <a class="nav-link" target="_blank" href="https://www.junioreconomicclub.org/about-us-mission">ABOUT US</a>
+  <a class="nav-link" href="/#/events">EVENTS</a>
+  <a class="nav-link" target="_blank" href="https://www.junioreconomicclub.org/contact-us">CONTACT</a>
+
+  <div class="flex-container"></div>
+  <div *ngIf="displayName.length > 0">
+    <div class="capsule">
+      <div class="icon"><span class="material-symbols-outlined"> person</span></div>
+        Hi,<b>&nbsp;{{displayName}} </b></div>
+    </div>
+</nav>
+ 
 </main>
 
 

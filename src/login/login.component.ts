@@ -55,10 +55,6 @@ export class LoginComponent {
   ngOnInit(): void {}
 
   onSubmit(): void {
-    // console.log(this.loginForm.value);
-    // if (this.loginForm.valid) {
-    //   console.log(this.loginForm.value);
-    // }
     const rawForm = this.loginForm.getRawValue();
     this.authService
       .login(rawForm.email, rawForm.password, rawForm.chapter)
@@ -76,13 +72,4 @@ export class LoginComponent {
   onReset() {
     this.loginForm.reset();
   }
-
-  onForgotPassword() {
-    console.log('Forgot Password clicked');
-  }
-
-  onSignUp() {
-    console.log('Sign Up clicked');
-  }
-
 }

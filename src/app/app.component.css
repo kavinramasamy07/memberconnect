@@ -1,0 +1,14 @@
+:host ::ng-deep .p-breadcrumb { 
+    border: 0px !important;
+    padding: 0px !important;
+  } 
+  :host ::ng-deep .p-breadcrumb ul li .p-menuitem-link .p-menuitem-text { 
+    color: #fff !important; 
+  } 
+  :host ::ng-deep .p-breadcrumb ul li .p-breadcrumb-chevron { 
+    color: #fff !important; 
+  } 
+  :host ::ng-deep .p-breadcrumb ul li:last-child .p-menuitem-text { 
+    color: #fff !important; 
+    font-weight: 600 !important; 
+  }

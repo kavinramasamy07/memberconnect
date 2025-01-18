@@ -79,10 +79,9 @@ export class EventsComponent implements OnInit{
     const token= localStorage.getItem('tokenId');
     const chapter = localStorage.getItem('chapter');
     var url=`https://api.junioreconomicclub.org/event/retrieveList?key=${token}&chapter=${chapter}`;
-    console.log(url);
     this.httpClient.get(url)
     .subscribe((e: any) => {
-      console.log(e);
+     // console.log(e);
       this.events = e.map((event: {id:string, title: string; startTime: any; endTime: any; location: string; description: string; registeredMembers: string[] }) => {
         var userId = localStorage.getItem('userId');
         var isRegistered = event.registeredMembers.includes(userId??"");
@@ -97,10 +96,7 @@ export class EventsComponent implements OnInit{
           isRegistered
         );
       });
-      
-      console.log(this.events);
-     
-      
+          
     })
   }
   showDialog(event: any) {
@@ -108,7 +104,6 @@ export class EventsComponent implements OnInit{
     this.visible = true;
  }
   register(event: any) {
-    console.log('Registered for:', event.id);
     const token= localStorage.getItem('tokenId');
     const chapter = localStorage.getItem('chapter');
     let registeredEvent = event;

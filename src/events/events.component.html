@@ -1,6 +1,7 @@
 <div class="container mt-6">
     
     <div class="row">
+        <div *ngIf="events.length > 0; else noEventsFound">
         <div class="col-md-6 mb-6 bluebackground" *ngFor="let event of events">
         <p-card [header]=event.name [subheader]=event.summary >
             <ng-template pTemplate="header">
@@ -26,6 +27,12 @@
             </ng-template>
         </p-card>
         </div>
+        </div>
+        <ng-template #noEventsFound>
+            <div class="custom-error-message">
+                There are no upcoming events at this time.
+            </div>
+          </ng-template>
 
     </div>
     <div *ngIf="selectedEvent" class="row">
