@@ -12,11 +12,13 @@ import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { DialogModule } from 'primeng/dialog';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, DropdownModule,   ReactiveFormsModule, InputTextModule, CardModule, ButtonModule, ToastModule],
+  imports: [FormsModule, DropdownModule, DialogModule, CommonModule,  ReactiveFormsModule, InputTextModule, CardModule, ButtonModule, ToastModule],
   providers:[MessageService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
@@ -29,6 +31,7 @@ export class LoginComponent {
   chapters: any[];
   router = inject(Router)
   errorMessage: string | null = null;
+  showForgotPassword =false;
   constructor(private fb: FormBuilder, private _messageService: MessageService ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -71,6 +74,10 @@ export class LoginComponent {
           this.errorMessage = err.code
         }
       })
+  }
+
+  onForgotPassword(){
+      this.showForgotPassword=!this.showForgotPassword;
   }
 
   onReset() {

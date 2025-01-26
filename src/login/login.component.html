@@ -23,7 +23,9 @@
          
           <div class="d-flex row">
             <div class="col-4">
-          </div>
+              <button type="button" class="btn btn-link p-button-text" (click) = "onForgotPassword()">Forgot Password</button>
+            </div>
+            
             <div class="col-8 align-right">
               <button type="submit" class="btn btn-primary btn-login p-button-rounded p-component" (click) = "onSubmit()">Login</button>
             </div>
@@ -41,3 +43,17 @@
   </div>
 </form>
 <p-toast key="toastKey" position="top-center"></p-toast>
+
+<div *ngIf="showForgotPassword" class="row">
+  <p-dialog 
+  header="Forgot Password" 
+  [modal]="true"
+  [(visible)]="showForgotPassword" 
+  [style]="{ width: '50rem' }" 
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+  <p class="mb-5">
+   <br/>Please contact JEC to reset password.
+  </p>
+     
+  </p-dialog>
+</div>
