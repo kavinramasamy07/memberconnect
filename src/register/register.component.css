@@ -44,9 +44,10 @@
   padding: 0 !important;
 }
 
-.btn-login{
+.btn-register{
     width: 30%;
     margin: 20px;
+    cursor: hand;
 }
 
 .p-card .p-card-footer

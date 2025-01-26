@@ -7,3 +7,8 @@
    font-size: small;
    color: red;
 }
+
+.errorBig{
+  font-size:larger;
+  color: red;
+}

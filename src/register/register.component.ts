@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -24,10 +24,11 @@ export class RegisterComponent {
   gradYears: string[];
   selectedGradYear: string;
   selectedChapter: string;
-  firebaseId: string;
   invitedId: string;
   httpClient = inject(HttpClient);
   router = inject(Router);
+  registrationError: string |null =null;
+  inviteIdExists = false; 
 
   constructor(private route: ActivatedRoute, private fb: FormBuilder, private auth: Auth) {
     this.registerForm = this.fb.group({
@@ -37,18 +38,28 @@ export class RegisterComponent {
       gradYear:['', [Validators.required]],
       gender: ['Male', [Validators.required]],
       email:['', [Validators.required, Validators.email]],
+      password:['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword:['', [Validators.required, Validators.minLength(6)]],
       chapter:['', Validators.required ]
+    },
+    {
+      validators: this.passwordMatchValidator
     });
     this.chapters = [
     
+      { label: 'Atlanta', value: 'Atlanta' },
+      { label: 'Berlin', value: 'Berlin' },
       { label: 'Boston', value: 'Boston' },
+      { label: 'Canada', value: 'Canada' },
       { label: 'Chicago', value: 'Chicago' },
+      { label: 'Honolulu', value: 'Honolulu' },
       { label: 'New York', value: 'NewYork' },
-      { label: 'San Franscisco', value: 'SanFranscisco' },
+      { label: 'San Francisco', value: 'SanFrancisco' },
+      { label: 'Virtual', value: 'Virtual' },
+      
     ];
     this.selectedGradYear="";
     this.selectedChapter="";
-    this.firebaseId="";
     this.invitedId="";
     const currentYear = new Date().getFullYear();
     this.gradYears = Array.from({ length: 4 }, (_, i) => (currentYear + i + 1).toString());
@@ -61,11 +72,17 @@ export class RegisterComponent {
       this.registerForm.controls['gradYear'].setValue(params['gradYear']);
       this.registerForm.controls['email'].setValue(params['email']);
       this.registerForm.controls['chapter'].setValue(params['chapter']);
-     
+      this.registerForm.controls['password'].setValue(params['password']);
+      this.registerForm.controls['confirmPassword'].setValue(params['confirmPassword']);
+      this.registerForm.controls['chapter'].setValue(params['chapter']);
       this.selectedGradYear=params['gradYear'];
       this.selectedChapter=params['chapter'];
-      this.firebaseId=params['id'];
-      this.invitedId=params['inviteid'];
+      this.invitedId=params['id'];
+
+      this.route.queryParams.subscribe((params) => {
+        // Check if the specific query parameter exists
+        this.inviteIdExists = !!params['id']; 
+      });
      
     });
   }
@@ -78,6 +95,12 @@ export class RegisterComponent {
   get email() {
     return this.registerForm.get('email')?.value;
   }
+  get password() {
+    return this.registerForm.get('password')?.value;
+  }
+  get confirmPassword() {
+    return this.registerForm.get('confirmPassword')?.value;
+  }
   get school() {
     return this.registerForm.get('school')?.value;
   }
@@ -87,11 +110,15 @@ export class RegisterComponent {
   get gradYear() {
     return this.registerForm.get('gradYear')?.value;
   }
-
   get gender() {
     return this.registerForm.get('gender')?.value;
   }
   
+  passwordMatchValidator(control: AbstractControl) {
+       return control?.get('password')?.value === control?.get('confirmPassword')?.value ? null : { mismatch:true }
+  };
+
+
   onSubmit(): void {
   
     if (this.registerForm.valid) {
@@ -104,27 +131,32 @@ export class RegisterComponent {
   }
 
   register() {
-
-    createUserWithEmailAndPassword(this.auth, this.email, "password") .then(async (userCred) => {
+    createUserWithEmailAndPassword(this.auth, this.email, this.password) .then(async (userCred) => {
       var res= await userCred.user.getIdTokenResult(true);
       localStorage.setItem('userId', res.claims.sub?.toString()??"")
       localStorage.setItem('tokenId', res.token);
       localStorage.setItem('chapter', this.chapter);
       const token= localStorage.getItem('tokenId');
       var userId = localStorage.getItem('userId');
+    
       var baseUrl="https://api.junioreconomicclub.org";
-      var qsp =  `email=${this.email}&firstName=${this.fName}&lastName=${this.lName}&school=${this.school}&gradYear=${this.gradYear}&gender=${this.gender}&id=${userId}&chapter=${this.chapter}&key=${token}`;
-      var url = baseUrl+ "/auth/registerNewUser?"+qsp;
+      var qsp =  `s=${this.invitedId}&email=${this.email}&firstName=${this.fName}&lastName=${this.lName}&school=${this.school}&gradYear=${this.gradYear}&gender=${this.gender}&id=${userId}&chapter=${this.chapter}&key=${token}`;
+      var url = baseUrl+ "/auth/registerNewUser/web?"+qsp;
       this.httpClient.get(url , { responseType: 'text' })
-      .subscribe((e: any) => {
+      .subscribe({
+        next:() => {
           this.router.navigateByUrl('/events');
-      });
+        },
+        error: (err) =>{
+            this.registrationError= err;
+        }
+      })
+     
     })
     .catch((error) => {
-      console.log(error);
+      this.registrationError= error;
     });;
-   
-    
+ 
   }
 
   onReset() {

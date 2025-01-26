@@ -37,11 +37,15 @@ export class LoginComponent {
     });
 
     this.chapters = [
-    
+      { label: 'Atlanta', value: 'Atlanta' },
+      { label: 'Berlin', value: 'Berlin' },
       { label: 'Boston', value: 'Boston' },
+      { label: 'Canada', value: 'Canada' },
       { label: 'Chicago', value: 'Chicago' },
+      { label: 'Honolulu', value: 'Honolulu' },
       { label: 'New York', value: 'NewYork' },
-      { label: 'San Franscisco', value: 'SanFranscisco' },
+      { label: 'San Francisco', value: 'SanFrancisco' },
+      { label: 'Virtual', value: 'Virtual' },
     ];
   }
 
