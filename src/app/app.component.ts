@@ -24,14 +24,12 @@ export class AppComponent {
   public displayName: any;
   showHead: boolean = false;
   private authService = inject(AuthService);
-  
 
+  
   constructor (private router: Router) {
    
     this.displayName='';
     this.router.events.subscribe((event: any) => {
-      console.log(event);
-
       if (event instanceof NavigationEnd) {
         if (event.url===('/') || event.url.includes('/login') || event.url.includes('/register')) {
           this.showHead= false;
@@ -51,7 +49,7 @@ export class AppComponent {
         this.dataRef = result.data();
         this.displayName = this.dataRef.firstName;
       }
-  } );
+    } );
 }
 }
 

@@ -7,9 +7,11 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, User } from 'firebase/auth';
 import { Auth } from '@angular/fire/auth';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { getFirestore, doc, setDoc, setLogLevel } from 'firebase/firestore';
+
 
 @Component({
   selector: 'app-register',
@@ -45,7 +47,7 @@ export class RegisterComponent {
     {
       validators: this.passwordMatchValidator
     });
-    this.chapters = [
+     this.chapters = [
     
       { label: 'Atlanta', value: 'Atlanta' },
       { label: 'Berlin', value: 'Berlin' },
@@ -138,14 +140,29 @@ export class RegisterComponent {
       localStorage.setItem('chapter', this.chapter);
       const token= localStorage.getItem('tokenId');
       var userId = localStorage.getItem('userId');
-    
+      
       var baseUrl="https://api.junioreconomicclub.org";
-      var qsp =  `s=${this.invitedId}&email=${this.email}&firstName=${this.fName}&lastName=${this.lName}&school=${this.school}&gradYear=${this.gradYear}&gender=${this.gender}&id=${userId}&chapter=${this.chapter}&key=${token}`;
+      var qsp =  `s=${this.invitedId}&email=${this.email}&fname=${this.fName}&lname=${this.lName}&school=${this.school}&gradYear=${this.gradYear}&gender=${this.gender}&id=${userId}&chapter=${this.chapter}&key=${token}`;
       var url = baseUrl+ "/auth/registerNewUser/web?"+qsp;
       this.httpClient.get(url , { responseType: 'text' })
       .subscribe({
-        next:() => {
-          this.router.navigateByUrl('/events');
+        next: () => {
+          //add the user to Firestore
+          const db = getFirestore();
+          setDoc(doc(db, "members", userId!), {
+           member: userId!,
+           chapter:this.chapter,
+           firstName:this.fName,
+           lastName:this.lName,
+           email:this.email,
+           gender:this.gender,
+           gradYear:this.gradYear,
+           school: this.school
+           
+         })
+         .then(() =>  this.router.navigateByUrl('/events'))
+         .catch(error => this.registrationError= error);
+          
         },
         error: (err) =>{
             this.registrationError= err;
