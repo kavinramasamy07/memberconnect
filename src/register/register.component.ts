@@ -157,7 +157,8 @@ export class RegisterComponent {
            email:this.email,
            gender:this.gender,
            gradYear:this.gradYear,
-           school: this.school
+           school: this.school,
+           joinYear: 2025
            
          })
          .then(() =>  this.router.navigateByUrl('/events'))
