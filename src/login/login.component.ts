@@ -62,6 +62,9 @@ export class LoginComponent {
   ngOnInit(): void {}
 
   onSubmit(): void {
+      if (!this.loginForm.valid) {
+        return;
+      }  
     const rawForm = this.loginForm.getRawValue();
     this.authService
       .login(rawForm.email, rawForm.password, rawForm.chapter)

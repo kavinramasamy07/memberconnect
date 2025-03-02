@@ -133,7 +133,8 @@ export class EventsComponent implements OnInit{
     const formatterEnd = new Intl.DateTimeFormat('en-US', {
       hour: 'numeric',
       minute: 'numeric',
-      hour12: true
+      hour12: true,
+      timeZoneName: 'short'
     });
   
     const formattedStart = formatterStart.format(startDate);
