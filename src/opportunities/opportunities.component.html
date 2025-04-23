@@ -1,0 +1,29 @@
+<div class="container mt-6">
+    
+    <div class="row">
+        <div *ngIf="opportunities.length > 0; else noOpportunitiesFound">
+        <div class="col-md-12 mb-12 bluebackground" *ngFor="let opp of opportunities">
+        <p-card [header]=opp.name>
+          
+            <ng-template pTemplate="content">
+                <p>{{ opp.summary }}</p>
+                <a target="_blank" href={{opp.url}}>{{opp.url}}</a>
+                <br/> <br/>
+                <p>
+                    <i class="pi pi-map-marker" style="font-size: 2rem"></i>
+                    <strong>Location:</strong> {{ opp.place }}
+                </p>
+            </ng-template>
+           
+        </p-card>
+        </div>
+        </div>
+        <ng-template #noOpportunitiesFound>
+            <div class="custom-error-message">
+                There are no available opportunities at this time. Please check back later.
+            </div>
+          </ng-template>
+
+    </div>
+    
+  </div>

@@ -46,8 +46,8 @@ export class LoginComponent {
       { label: 'Canada', value: 'Canada' },
       { label: 'Chicago', value: 'Chicago' },
       { label: 'Honolulu', value: 'Honolulu' },
-      { label: 'New York', value: 'NewYork' },
-      { label: 'San Francisco', value: 'SanFrancisco' },
+      { label: 'New York', value: 'New York' },
+      { label: 'San Francisco', value: 'San Francisco' },
       { label: 'Virtual', value: 'Virtual' },
     ];
   }
