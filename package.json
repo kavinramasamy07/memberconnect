@@ -21,6 +21,7 @@
     "@angular/router": "^17.3.0",
     "@ng-bootstrap/ng-bootstrap": "^16.0.0",
     "@popperjs/core": "^2.11.8",
+    "angular-auth-oidc-client": "^17.1.0",
     "bootstrap": "^5.3.3",
     "express": "^4.21.2",
     "firebase": "^10.12.3",

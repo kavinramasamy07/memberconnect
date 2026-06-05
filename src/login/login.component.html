@@ -1,71 +1,24 @@
-<form>
-    <div class="row">
-    <div class="col-2">&nbsp;</div>
-    <div class="col-8 top-pad-100">
+<div class="row">
+  <div class="col-2">&nbsp;</div>
+  <div class="col-8 top-pad-100">
     <p-card header="Member Login">
       <ng-template pTemplate="header">
-          <img alt="Card" width="50%" style="padding: 30px;" height="75%" src="https://cdn.prod.website-files.com/61dfe01d7c07e8e67a2a7a9a/61dfe01d7c07e887742a7aa7_Group%2051.svg" />
+        <img alt="Card" width="50%" style="padding: 30px;" height="75%"
+          src="https://cdn.prod.website-files.com/61dfe01d7c07e8e67a2a7a9a/61dfe01d7c07e887742a7aa7_Group%2051.svg" />
       </ng-template>
-     
-        <form [formGroup]="loginForm">
-          <div class="form-group mb-3 spacer">
-              <input id="email" type="email" placeholder="Email" formControlName="email" class="form-control p-inputtext p-component">
-          </div>
-          <div class="error" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
-            Email is required/invalid.
-          </div>
-          
-          <div class="form-group mb-3 spacer">
-            <!-- <label for="password">Password</label> -->
-            <input id="password" type="password" placeholder="Password" formControlName="password" class="form-control p-password p-component">
-          </div>
-          <div class="error" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
-            Password is required.
-          </div>
-          
 
-          <div class="form-group mb-3">
-            <label for="city">Chapter</label>
-            <p-dropdown [options]="chapters" formControlName="chapter" placeholder="Select a Chapter" class="p-ddl form-control"></p-dropdown>
-          </div>
-          <div class="error" *ngIf="loginForm.get('chapter')?.invalid && loginForm.get('email')?.touched">
-            Chapter is required.
-          </div>
-          
-         
-          <div class="d-flex row">
-            <div class="col-4">
-              <button type="button" class="btn btn-link p-button-text" (click) = "onForgotPassword()">Forgot Password</button>
-            </div>
-            
-            <div class="col-8 align-right">
-              <button type="submit" class="btn btn-primary btn-login p-button-rounded p-component" (click) = "onSubmit()">Login</button>
-            </div>
-         </div>
-         
-        </form>
-     
+      <p class="mb-4">Sign in with your Junior Economic Club account to continue.</p>
+
+      <div class="d-flex row">
+        <div class="col-12 align-right">
+          <button type="button" class="btn btn-primary btn-login p-button-rounded p-component"
+            (click)="onLogin()">Sign In</button>
+        </div>
+      </div>
+
       <ng-template pTemplate="footer">
-          <div class="flex gap-3 mt-1">
-         </div>
+        <div class="flex gap-3 mt-1"></div>
       </ng-template>
-  </p-card>
+    </p-card>
   </div>
- 
-  </div>
-</form>
-<p-toast key="toastKey" position="top-center"></p-toast>
-
-<div *ngIf="showForgotPassword" class="row">
-  <p-dialog 
-  header="Forgot Password" 
-  [modal]="true"
-  [(visible)]="showForgotPassword" 
-  [style]="{ width: '50rem' }" 
-  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
-  <p class="mb-5">
-   <br/>Please contact JEC to reset password.
-  </p>
-     
-  </p-dialog>
 </div>

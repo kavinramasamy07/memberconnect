@@ -1,55 +1,71 @@
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { Component, inject } from '@angular/core';
-import { Firestore } from '@angular/fire/firestore'
-import { FirebaseTSFirestore } from 'firebasets/firebasetsFirestore/firebaseTSFirestore';
-import { Auth } from 'firebase/auth';
+import { Component, inject, OnInit } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { AuthService } from './auth.service';
-import { FirebaseTSApp } from 'firebasets/firebasetsApp/firebaseTSApp';
-import { firebaseConfig } from './app.config';
 import { CommonModule } from '@angular/common';
-
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, CommonModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
 })
-
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'memberConnect';
-  private firestore: FirebaseTSFirestore | undefined;
-  private dataRef: any;
-  public displayName: any;
+  public displayName: string = '';
   showHead: boolean = false;
-  private authService = inject(AuthService);
 
-  
-  constructor (private router: Router) {
-   
-    this.displayName='';
+  private authService = inject(AuthService);
+  private oidc = inject(OidcSecurityService);
+  private http = inject(HttpClient);
+
+  constructor(private router: Router) {
     this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
-        if (event.url===('/') || event.url.includes('/login') || event.url.includes('/register')) {
-          this.showHead= false;
+        if (
+          event.url === '/' ||
+          event.url.includes('/login') ||
+          event.url.includes('/register')
+        ) {
+          this.showHead = false;
         } else {
-          this.showHead= true;
+          this.showHead = true;
         }
       }
     });
   }
 
   ngOnInit(): void {
-    FirebaseTSApp.init(firebaseConfig);
-    this.firestore = new FirebaseTSFirestore();
-    this.firestore.getDocument({
-      path: ["members", (localStorage.getItem('userId')??"")],
-      onComplete: (result: any) => {
-        this.dataRef = result.data();
-        this.displayName = this.dataRef.firstName;
+    // Processes the Hosted UI redirect callback (?code=...) on app load and
+    // restores an existing session on subsequent loads.
+    this.oidc.checkAuth().subscribe(({ isAuthenticated, userData }) => {
+      if (!isAuthenticated) {
+        return;
       }
-    } );
-}
-}
+      // Persist sub + custom:chapter so the rest of the app can read them.
+      this.authService.persistClaims(userData);
+      this.loadMemberName();
+    });
+  }
 
+  /** Replaces the former Firestore profile read. */
+  private loadMemberName(): void {
+    this.authService.getIdToken().subscribe((token) => {
+      if (!token) {
+        return;
+      }
+      const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+      const url = `https://api.junioreconomicclub.org/account/retrieveDetails?chapter=${this.authService.chapter}`;
+      this.http.get<any>(url, { headers }).subscribe({
+        next: (member) => {
+          this.displayName = member?.firstName ?? '';
+        },
+        error: () => {
+          this.displayName = '';
+        },
+      });
+    });
+  }
+}
