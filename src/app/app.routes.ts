@@ -1,39 +1,27 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from '../login/login.component';
 import { EventsComponent } from '../events/events.component';
-import {AuthGuard, redirectUnauthorizedTo} from '@angular/fire/auth-guard';
-import { RegisterComponent } from '../register/register.component';
 import { OpportunitiesComponent } from '../opportunities/opportunities.component';
-  
-const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
+import { AutoLoginPartialRoutesGuard } from 'angular-auth-oidc-client';
 
 export const routes: Routes = [
-{
+  {
     path: 'login',
-    component: LoginComponent
-},
-{
-    path: 'register',
-    component: RegisterComponent
-},
-{
+    component: LoginComponent,
+  },
+  {
     path: 'events',
     component: EventsComponent,
-    canActivate: [AuthGuard],
-    data: {authGuardPipe: redirectUnauthorizedToLogin}
-},
-{
+    canActivate: [AutoLoginPartialRoutesGuard],
+  },
+  {
     path: 'opportunities',
     component: OpportunitiesComponent,
-    canActivate: [AuthGuard],
-    data: {authGuardPipe: redirectUnauthorizedToLogin}
-},
-{
-    path:'**',
+    canActivate: [AutoLoginPartialRoutesGuard],
+  },
+  {
+    path: '**',
     redirectTo: 'login',
-    pathMatch: 'full'
-}
-
-
-
+    pathMatch: 'full',
+  },
 ];

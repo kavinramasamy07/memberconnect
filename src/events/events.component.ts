@@ -4,13 +4,9 @@ import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { inject } from '@angular/core';
-import {AngularFireModule } from '@angular/fire/compat'
-import {provideFirebaseApp, initializeApp} from '@angular/fire/app'
-import { provideHttpClient } from '@angular/common/http';
-import { async } from 'rxjs';
-import firebase from 'firebase/compat';
+import { AuthService } from '../app/auth.service';
 
 export class Event{
   public id:string='';
@@ -65,7 +61,8 @@ export class EventsComponent implements OnInit{
   public showConfirmation: boolean =false;
   selectedEvent: Event | null=null;
   httpClient = inject(HttpClient);
-  
+  authService = inject(AuthService);
+
   events: Event[] = [];
   constructor() { }
   ngOnInit(): void {
@@ -75,15 +72,16 @@ export class EventsComponent implements OnInit{
   
   
   fetchData(){
-  
-    const token= localStorage.getItem('tokenId');
-    const chapter = localStorage.getItem('chapter');
-    var url=`https://api.junioreconomicclub.org/event/retrieveList?key=${token}&chapter=${chapter}`;
-    this.httpClient.get(url)
+
+    const chapter = this.authService.chapter;
+    this.authService.getIdToken().subscribe((token) => {
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+    var url=`https://api.junioreconomicclub.org/event/retrieveList?chapter=${chapter}`;
+    this.httpClient.get(url, { headers })
     .subscribe((e: any) => {
      // console.log(e);
       this.events = e.map((event: {id:string, title: string; startTime: any; endTime: any; location: string; description: string; registeredMembers: string[] }) => {
-        var userId = localStorage.getItem('userId');
+        var userId = this.authService.userId;
         var isRegistered = event.registeredMembers.includes(userId??"");
         return new Event(
           event.id,
@@ -96,22 +94,25 @@ export class EventsComponent implements OnInit{
           isRegistered
         );
       });
-          
-    })
+
+    });
+    });
   }
   showDialog(event: any) {
     this.selectedEvent= event;
     this.visible = true;
  }
   register(event: any) {
-    const token= localStorage.getItem('tokenId');
-    const chapter = localStorage.getItem('chapter');
+    const chapter = this.authService.chapter;
     let registeredEvent = event;
-    var url=`https://api.junioreconomicclub.org/event/register?key=${token}&id=${event.id}&chapter=${chapter}&eventChapter=${chapter}`;
-    this.httpClient.get(url)
-    .subscribe((e: any) => {
-      this.showConfirmation = true;
-      registeredEvent.isRegistered=true;
+    this.authService.getIdToken().subscribe((token) => {
+      const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+      var url=`https://api.junioreconomicclub.org/event/register?id=${event.id}&chapter=${chapter}&eventChapter=${chapter}`;
+      this.httpClient.get(url, { headers })
+      .subscribe((e: any) => {
+        this.showConfirmation = true;
+        registeredEvent.isRegistered=true;
+      });
     });
   }
 
